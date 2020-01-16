@@ -24,6 +24,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
         final SharedPreferences sharedPreferences = getSharedPreferences("Content_main", Context.MODE_PRIVATE);
         final String Default = "N/A";
 
@@ -38,34 +39,15 @@ public class SplashActivity extends AppCompatActivity {
             mediaPlayer.setLooping(true);
         }
 
-        if (name_file.equals(Default) || pass_file.equals(Default) || email_file.equals(Default) || gender_file.equals(Default)) {
-            SharedPreferences.Editor editorMock = sharedPreferences.edit();
-            editorMock.putString("name", "mock");
-            editorMock.putString("password", "mock");
-            editorMock.putString("email", "mock@mock.com");
-            editorMock.putString("gender", "Male");
-            editorMock.commit();
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(SplashActivity.this, Navigation_Activity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }, 3500);
-        } else {
-            setContentView(R.layout.activity_splash);
-//            setContentView(R.layout.activity_splash);
-
-//            icon_user = (ImageView) findViewById(R.id.image_icon);
-//            icon_user.setImageResource(R.drawable.man);            name_display = (TextView) findViewById(R.id.name_display);
-//            name_display.setText(name_file);
-//            edit_password2 = (EditText) findViewById(R.id.password2);
-//            show2 = (Button) findViewById(R.id.show2);
-//            forget = (TextView) findViewById(R.id.forget);
-//            Continue = (Button) findViewById(R.id.Continue);
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashActivity.this, Navigation_Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 3500);
     }
 
     //Used to add some time so that user cannot directly press and exity out of the activity

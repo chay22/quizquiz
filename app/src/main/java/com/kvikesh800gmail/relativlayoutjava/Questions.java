@@ -1,5 +1,6 @@
 package com.kvikesh800gmail.relativlayoutjava;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +28,7 @@ public class Questions extends AppCompatActivity {
     TextView ques;
     Button OptA, OptB, OptC, OptD;
     Button play_button;
+    boolean isDataReady = false;
     String get;
     //Objects of different classes
     books Books;
@@ -35,14 +38,16 @@ public class Questions extends AppCompatActivity {
     capitals Capitals;
     english English;
     general General;
+    ProgressDialog progressBar;
     inventions Inventions;
     maths Maths;
     science Science;
     public int visibility = 0, c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, i, j = 0, k = 0, l = 0;
     String global = null, Ques, Opta, Optb, Optc, Optd;
-    ArrayList<Integer> list = new ArrayList<Integer>();
+    ArrayList<Integer> list = new ArrayList<>();
     Toast toast;
     MediaPlayer mediaPlayer;
+    boolean goNext = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,155 +234,133 @@ public class Questions extends AppCompatActivity {
                 }
             }
         }
-        if (get.equals("c1")) {
 
-            if (c1 == 0) {
-                for (i = 1; i < 90; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c1=1;
-            }
-            Ques = Computer.readQuestion(list.get(j));
-            Opta = Computer.readOptionA(list.get(j));
-            Optb = Computer.readOptionB(list.get(j));
-            Optc = Computer.readOptionC(list.get(j));
-            Optd = Computer.readOptionD(list.get(j));
-            global = Computer.readAnswer(list.get(j++));
-        } else if (get.equals("c2")) {
-            if (c2 == 0) {
-                for (i = 1; i < 25; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c2=1;
-            }
-            Ques = Sports.readQuestion(list.get(j));
-            Opta = Sports.readOptionA(list.get(j));
-            Optb = Sports.readOptionB(list.get(j));
-            Optc = Sports.readOptionC(list.get(j));
-            Optd = Sports.readOptionD(list.get(j));
-            global = Sports.readAnswer(list.get(j++));
+        if (isDataReady) {
+            loadQuiz();
+        } else {
+            isDataReady = true;
+            list = LoadData.init(get);
 
-        } else if (get.equals("c3")) {
-            if (c3 == 0) {
-                for (i = 1; i < 25; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c3=1;
-            }
-            Ques = Inventions.readQuestion(list.get(j));
-            Opta = Inventions.readOptionA(list.get(j));
-            Optb = Inventions.readOptionB(list.get(j));
-            Optc = Inventions.readOptionC(list.get(j));
-            Optd = Inventions.readOptionD(list.get(j));
-            global = Inventions.readAnswer(list.get(j++));
-        } else if (get.equals("c4")) {
-            if (c4 == 0) {
-                for (i = 1; i < 25; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c4=1;
-            }
-            Ques = General.readQuestion(list.get(j));
-            Opta = General.readOptionA(list.get(j));
-            Optb = General.readOptionB(list.get(j));
-            Optc = General.readOptionC(list.get(j));
-            Optd = General.readOptionD(list.get(j));
-            global = General.readAnswer(list.get(j++));
-        } else if (get.equals("c5")) {
-            if (c5 == 0) {
-                for (i = 1; i < 30; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c5=1;
-            }
-            Ques = Science.readQuestion(list.get(j));
-            Opta = Science.readOptionA(list.get(j));
-            Optb = Science.readOptionB(list.get(j));
-            Optc = Science.readOptionC(list.get(j));
-            Optd = Science.readOptionD(list.get(j));
-            global = Science.readAnswer(list.get(j++));
-        } else if (get.equals("c6")) {
-            if (c6 == 0) {
-                for (i = 1; i < 27; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c6=1;
-            }
-            Ques = English.readQuestion(list.get(j));
-            Opta = English.readOptionA(list.get(j));
-            Optb = English.readOptionB(list.get(j));
-            Optc = English.readOptionC(list.get(j));
-            Optd = English.readOptionD(list.get(j));
-            global = English.readAnswer(list.get(j++));
-
-        } else if (get.equals("c7")) {
-            if (c7 == 0) {
-                for (i = 1; i < 21; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c7=1;
-            }
-            Ques = Books.readQuestion(list.get(j));
-            Opta = Books.readOptionA(list.get(j));
-            Optb = Books.readOptionB(list.get(j));
-            Optc = Books.readOptionC(list.get(j));
-            Optd = Books.readOptionD(list.get(j));
-            global = Books.readAnswer(list.get(j++));
-        } else if (get.equals("c8")) {
-            if (c8 == 0) {
-                for (i = 1; i < 26; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c8=1;
-            }
-            Ques = Maths.readQuestion(list.get(j));
-            Opta = Maths.readOptionA(list.get(j));
-            Optb = Maths.readOptionB(list.get(j));
-            Optc = Maths.readOptionC(list.get(j));
-            Optd = Maths.readOptionD(list.get(j));
-            global = Maths.readAnswer(list.get(j++));
-        } else if (get.equals("c9")) {
-            if (c9 == 0) {
-                for (i = 1; i < 90; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c9=1;
-            }
-            Ques = Capitals.readQuestion(list.get(j));
-            Opta = Capitals.readOptionA(list.get(j));
-            Optb = Capitals.readOptionB(list.get(j));
-            Optc = Capitals.readOptionC(list.get(j));
-            Optd = Capitals.readOptionD(list.get(j));
-            global = Capitals.readAnswer(list.get(j++));
-        } else if (get.equals("c10")) {
-            if (c10 == 0) {
-                for (i = 1; i < 40; i++) {
-                    list.add(new Integer(i));
-                }
-                Collections.shuffle(list);
-                c10=1;
-            }
-            Ques = Currency.readQuestion(list.get(j));
-            Opta = Currency.readOptionA(list.get(j));
-            Optb = Currency.readOptionB(list.get(j));
-            Optc = Currency.readOptionC(list.get(j));
-            Optd = Currency.readOptionD(list.get(j));
-            global = Currency.readAnswer(list.get(j++));
+            loadQuiz();
         }
+    }
+
+    private void deployQuiz(String type) {
+        switch (type) {
+            case "c1":
+                Ques = Computer.readQuestion(list.get(j));
+                Opta = Computer.readOptionA(list.get(j));
+                Optb = Computer.readOptionB(list.get(j));
+                Optc = Computer.readOptionC(list.get(j));
+                Optd = Computer.readOptionD(list.get(j));
+                global = Computer.readAnswer(list.get(j++));
+            break;
+            case "c2":
+                Ques = Sports.readQuestion(list.get(j));
+                Opta = Sports.readOptionA(list.get(j));
+                Optb = Sports.readOptionB(list.get(j));
+                Optc = Sports.readOptionC(list.get(j));
+                Optd = Sports.readOptionD(list.get(j));
+                global = Sports.readAnswer(list.get(j++));
+            break;
+            case "c3":
+                Ques = Inventions.readQuestion(list.get(j));
+                Opta = Inventions.readOptionA(list.get(j));
+                Optb = Inventions.readOptionB(list.get(j));
+                Optc = Inventions.readOptionC(list.get(j));
+                Optd = Inventions.readOptionD(list.get(j));
+                global = Inventions.readAnswer(list.get(j++));
+            break;
+            case "c4":
+                Ques = General.readQuestion(list.get(j));
+                Opta = General.readOptionA(list.get(j));
+                Optb = General.readOptionB(list.get(j));
+                Optc = General.readOptionC(list.get(j));
+                Optd = General.readOptionD(list.get(j));
+                global = General.readAnswer(list.get(j++));
+            break;
+            case "c5":
+                Ques = Science.readQuestion(list.get(j));
+                Opta = Science.readOptionA(list.get(j));
+                Optb = Science.readOptionB(list.get(j));
+                Optc = Science.readOptionC(list.get(j));
+                Optd = Science.readOptionD(list.get(j));
+                global = Science.readAnswer(list.get(j++));
+            break;
+            case "c6":
+                Ques = English.readQuestion(list.get(j));
+                Opta = English.readOptionA(list.get(j));
+                Optb = English.readOptionB(list.get(j));
+                Optc = English.readOptionC(list.get(j));
+                Optd = English.readOptionD(list.get(j));
+                global = English.readAnswer(list.get(j++));
+            break;
+            case "c7":
+                Ques = Books.readQuestion(list.get(j));
+                Opta = Books.readOptionA(list.get(j));
+                Optb = Books.readOptionB(list.get(j));
+                Optc = Books.readOptionC(list.get(j));
+                Optd = Books.readOptionD(list.get(j));
+                global = Books.readAnswer(list.get(j++));
+            break;
+            case "c8":
+                Ques = Maths.readQuestion(list.get(j));
+                Opta = Maths.readOptionA(list.get(j));
+                Optb = Maths.readOptionB(list.get(j));
+                Optc = Maths.readOptionC(list.get(j));
+                Optd = Maths.readOptionD(list.get(j));
+                global = Maths.readAnswer(list.get(j++));
+            break;
+            case "c9":
+                Ques = Capitals.readQuestion(list.get(j));
+                Opta = Capitals.readOptionA(list.get(j));
+                Optb = Capitals.readOptionB(list.get(j));
+                Optc = Capitals.readOptionC(list.get(j));
+                Optd = Capitals.readOptionD(list.get(j));
+                global = Capitals.readAnswer(list.get(j++));
+            break;
+            case "c10":
+                Ques = Currency.readQuestion(list.get(j));
+                Opta = Currency.readOptionA(list.get(j));
+                Optb = Currency.readOptionB(list.get(j));
+                Optc = Currency.readOptionC(list.get(j));
+                Optd = Currency.readOptionD(list.get(j));
+                global = Currency.readAnswer(list.get(j++));
+            break;
+        }
+
         ques.setText("" + Ques);
         OptA.setText(Opta);
         OptB.setText(Optb);
         OptC.setText(Optc);
         OptD.setText(Optd);
+    }
+
+    private void loadQuiz() {
+        if (list.size() > j + 1) {
+            deployQuiz(get);
+        } else {
+            progressBar = new ProgressDialog(this);//Create new object of progress bar type
+            progressBar.setCancelable(false);//Progress bar cannot be cancelled by pressing any wher on screen
+            progressBar.setMessage("Preparing Result ...");//Title shown in the progress bar
+            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);//Style of the progress bar
+            progressBar.setProgress(0);//attributes
+            progressBar.setMax(100);//attributes
+            progressBar.show();//show the progress bar
+            //This handler will add a delay of 3 seconds
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Intent start to open the navigation drawer activity
+                    progressBar.cancel();//Progress bar will be cancelled (hide from screen) when this run function will execute after 3.5seconds
+                    Intent intent = new Intent(Questions.this, Result.class);
+                    intent.putExtra("correct", l);
+                    intent.putExtra("attemp", k);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 2000);
+        }
     }
 
     @Override
