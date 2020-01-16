@@ -26,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final SharedPreferences sharedPreferences = getSharedPreferences("Content_main", Context.MODE_PRIVATE);
         final String Default = "N/A";
+        setContentView(R.layout.activity_splash);
 
         String name_file = sharedPreferences.getString("name", Default);
         String pass_file = sharedPreferences.getString("password", Default);
@@ -55,7 +56,17 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }, 3500);
         } else {
-            setContentView(R.layout.activity_splash);
+
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(SplashActivity.this, Navigation_Activity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 3500);
+
 //            setContentView(R.layout.activity_splash);
 
 //            icon_user = (ImageView) findViewById(R.id.image_icon);

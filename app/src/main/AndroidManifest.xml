@@ -9,8 +9,12 @@
         android:icon="@drawable/question"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name=".SplashActivity"
             android:label="JatiQuiz"
+            android:parentActivityName=".Navigation_Activity"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
