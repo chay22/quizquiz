@@ -25,14 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        final SharedPreferences sharedPreferences = getSharedPreferences("Content_main", Context.MODE_PRIVATE);
-        final String Default = "N/A";
-        setContentView(R.layout.activity_splash);
 
-        String name_file = sharedPreferences.getString("name", Default);
-        String pass_file = sharedPreferences.getString("password", Default);
-        String email_file = sharedPreferences.getString("email", Default);
-        String gender_file = sharedPreferences.getString("gender", Default);
         SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
         if (sp.getInt("Sound", 0) == 0) {
             mediaPlayer = MediaPlayer.create(this, R.raw.abc);
@@ -40,24 +33,14 @@ public class SplashActivity extends AppCompatActivity {
             mediaPlayer.setLooping(true);
         }
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(SplashActivity.this, Navigation_Activity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }, 3500);
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(SplashActivity.this, Navigation_Activity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }, 3500);
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashActivity.this, Navigation_Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 3500);
     }
 
     //Used to add some time so that user cannot directly press and exity out of the activity
