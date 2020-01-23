@@ -27,11 +27,11 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
-        if (sp.getInt("Sound", 0) == 0) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.abc);
-            mediaPlayer.start();
-            mediaPlayer.setLooping(true);
-        }
+//        if (sp.getInt("Sound", 0) == 0) {
+//            mediaPlayer = MediaPlayer.create(this, R.raw.abc);
+//            mediaPlayer.start();
+//            mediaPlayer.setLooping(true);
+//        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -64,19 +64,19 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
-        if (sp.getInt("Sound", 0) == 0)
-            mediaPlayer.pause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
-        if (sp.getInt("Sound", 0) == 0)
-            mediaPlayer.start();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
+//        if (sp.getInt("Sound", 0) == 0)
+//            mediaPlayer.pause();
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
+//        if (sp.getInt("Sound", 0) == 0)
+//            mediaPlayer.start();
+//    }
 }

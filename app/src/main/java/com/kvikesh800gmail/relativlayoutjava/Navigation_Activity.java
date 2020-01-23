@@ -41,8 +41,8 @@ public class Navigation_Activity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
         SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
         //To play background sound
         if (sp.getInt("Sound", 0) == 0) {
@@ -55,7 +55,7 @@ public class Navigation_Activity extends AppCompatActivity
         String nav_header_name = sharedPreferences.getString("name", "xyz");
         String nav_header_email = sharedPreferences.getString("email", "abc@gmail.com");
         String nav_header_gender = sharedPreferences.getString("gender", "Male");
-        View header = navigationView.getHeaderView(0);//Used to get a reference to navigation header
+//        View header = navigationView.getHeaderView(0);
 //        nav_header_nam = (TextView) header.findViewById(R.id.nav_header_name);
 //        nav_header_emal = (TextView) header.findViewById(R.id.nav_header_email);
 //        nav_header_imag = (ImageView) header.findViewById(R.id.nav_header_image);
