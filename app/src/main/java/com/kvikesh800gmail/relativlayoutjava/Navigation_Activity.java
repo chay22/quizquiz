@@ -392,7 +392,7 @@ public class Navigation_Activity extends AppCompatActivity
 
         } else if (id == R.id.nav_Setting) {
               /*  startActivity(new Intent(this,Setting.class));*/
-            startActivity(new Intent(this, Setting_activity.class));
+            startActivity(new Intent(this, SettingActivity.class));
 
         } else if (id == R.id.nav_share) {
             //shareApplication();

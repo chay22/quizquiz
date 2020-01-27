@@ -21,24 +21,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:label="Quizbook"-->
-<!--            android:screenOrientation="portrait">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <activity
+            android:name="com.kvikesh800gmail.view.MainActivity"
+            android:label="Quizbook"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".Navigation_Activity"
             android:label="QuizBook"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.kvikesh800gmail.view.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.kvikesh800gmail.relativlayoutjava.MainActivity" />
+                android:value="com.kvikesh800gmail.relativlayoutjava.com.kvikesh800gmail.view.MainActivity" />
         </activity>
         <activity
             android:name=".AboutUs"
@@ -76,7 +72,7 @@
             android:name=".Help"
             android:label="Help" />
         <activity
-            android:name=".Setting_activity"
+            android:name=".SettingActivity"
             android:label="@string/title_activity_setting_activity"
             android:parentActivityName=".Navigation_Activity"
             android:theme="@style/AppTheme.NoActionBar">

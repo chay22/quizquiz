@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/QuizBook-app.iml" filepath="$PROJECT_DIR$/app/QuizBook-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/quizquiz.iml" filepath="$PROJECT_DIR$/quizquiz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/quizquiz-app.iml" filepath="$PROJECT_DIR$/app/quizquiz-app.iml" />
     </modules>
   </component>
 </project>

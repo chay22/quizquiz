@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,9 +26,9 @@ import java.util.Collections;
 public class Questions extends AppCompatActivity {
     DonutProgress donutProgress;
     int variable =0;
-    TextView ques;
+    TextView ques, timeLimit;
     Button OptA, OptB, OptC, OptD;
-    Button play_button;
+    ImageView play_button;
     boolean isDataReady = false;
     String get;
     //Objects of different classes
@@ -48,6 +49,7 @@ public class Questions extends AppCompatActivity {
     Toast toast;
     MediaPlayer mediaPlayer;
     boolean goNext = false;
+    boolean inBackground = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,11 @@ public class Questions extends AppCompatActivity {
 
         Intent intent = getIntent();//recieving the intent send by the Navigation activity
         get = intent.getStringExtra(Navigation_Activity.Message);//converting that intent message to string using the getStringExtra() method
+
+        setTitleActionBar(get);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.countdown_timer);
+
         toast = new Toast(this);
         //attribute of the circular progress bar
         donutProgress = (DonutProgress) findViewById(R.id.donut_progress);
@@ -68,13 +75,6 @@ public class Questions extends AppCompatActivity {
         donutProgress.setFinishedStrokeColor(Color.parseColor("#FFFB385F"));
         donutProgress.setTextColor(Color.parseColor("#FFFB385F"));
         donutProgress.setKeepScreenOn(true);
-        SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
-        //To play background sound
-        if (sp.getInt("Sound", 0) == 0) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.abc);
-            mediaPlayer.start();
-            mediaPlayer.setLooping(true);
-        }
 
         //Now the linking of all the datbase files with the Question activity
         Books = new books(this);
@@ -132,13 +132,12 @@ public class Questions extends AppCompatActivity {
         OptC = (Button) findViewById(R.id.OptionC);
         OptD = (Button) findViewById(R.id.OptionD);
         ques = (TextView) findViewById(R.id.Questions);
-        play_button = (Button) findViewById(R.id.play_button);//Play button to start the game
-
+        play_button = (ImageView) findViewById(R.id.play_button);//Play button to start the game
+        timeLimit = (TextView) findViewById(R.id.tv_time_limit);
     }
 
 
     public void onClick(View v) {//When this method is executed then there will be new question came and also same method for play button
-        final SharedPreferences shared = getSharedPreferences("Score", Context.MODE_PRIVATE);
         k++;
         if (visibility == 0) {
             //showing the buttons which were previously invisible
@@ -147,6 +146,7 @@ public class Questions extends AppCompatActivity {
             OptC.setVisibility(View.VISIBLE);
             OptD.setVisibility(View.VISIBLE);
             play_button.setVisibility(View.GONE);
+            timeLimit.setVisibility(View.GONE);
             donutProgress.setVisibility(View.VISIBLE);
             visibility = 1;
             new CountDownTimer(50000, 1000) {//countdowntimer
@@ -155,44 +155,15 @@ public class Questions extends AppCompatActivity {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     i = i - 2;
+                    playSoundTimer();
                     donutProgress.setProgress(i);
-
-
                 }
 
                 @Override
                 public void onFinish() {
                     toast.cancel();
-                    SharedPreferences.Editor editor = shared.edit();//here we are saving the data when the countdown timer will finish and it is saved in shared prefrence file that is defined in onCreate method as score
-                    editor.putInt("Questions", k).commit();
-                    if (get.equals("c1") && shared.getInt("Computer", 0) < l)
-                        editor.putInt("Computer", l * 10).apply();
-                    else if (get.equals("c2") && shared.getInt("Sports", 0) < l)
-                        editor.putInt("Sports", l * 10).apply();
-                    else if (get.equals("c3") && shared.getInt("Inventions", 0) < l)
-                        editor.putInt("Inventions", l * 10).apply();
-                    else if (get.equals("c4") && shared.getInt("General", 0) < l)
-                        editor.putInt("General", l * 10).apply();
-                    else if (get.equals("c5") && shared.getInt("Science", 0) < l)
-                        editor.putInt("Science", l * 10).apply();
-                    else if (get.equals("c6") && shared.getInt("English", 0) < l)
-                        editor.putInt("English", l * 10).apply();
-                    else if (get.equals("c7") && shared.getInt("Books", 0) < l)
-                        editor.putInt("Books", l * 10).apply();
-                    else if (get.equals("c8") && shared.getInt("Maths", 0) < l)
-                        editor.putInt("Maths", l * 10).apply();
-                    else if (get.equals("c9") && shared.getInt("Capitals", 0) < l)
-                        editor.putInt("Capitals", l * 10).apply();
-                    else if (get.equals("c10") && shared.getInt("Currency", 0) < l)
-                        editor.putInt("Currency", l * 10).apply();
-                    donutProgress.setProgress(0);
-                    if(variable==0) {
-                        Intent intent = new Intent(Questions.this, Result.class);
-                        intent.putExtra("correct", l);
-                        intent.putExtra("attemp", k);
-                        startActivity(intent);
-                        finish();
-                    }
+
+                    goToResult();
                 }
             }.start();
         }
@@ -340,50 +311,95 @@ public class Questions extends AppCompatActivity {
         if (list.size() > j + 1) {
             deployQuiz(get);
         } else {
-            final SharedPreferences shared = getSharedPreferences("Score", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = shared.edit();//here we are saving the data when the countdown timer will finish and it is saved in shared prefrence file that is defined in onCreate method as score
-            editor.putInt("Questions", k).commit();
-            if (get.equals("c1") && shared.getInt("Computer", 0) < l)
-                editor.putInt("Computer", l * 10).apply();
-            else if (get.equals("c2") && shared.getInt("Sports", 0) < l)
-                editor.putInt("Sports", l * 10).apply();
-            else if (get.equals("c3") && shared.getInt("Inventions", 0) < l)
-                editor.putInt("Inventions", l * 10).apply();
-            else if (get.equals("c4") && shared.getInt("General", 0) < l)
-                editor.putInt("General", l * 10).apply();
-            else if (get.equals("c5") && shared.getInt("Science", 0) < l)
-                editor.putInt("Science", l * 10).apply();
-            else if (get.equals("c6") && shared.getInt("English", 0) < l)
-                editor.putInt("English", l * 10).apply();
-            else if (get.equals("c7") && shared.getInt("Books", 0) < l)
-                editor.putInt("Books", l * 10).apply();
-            else if (get.equals("c8") && shared.getInt("Maths", 0) < l)
-                editor.putInt("Maths", l * 10).apply();
-            else if (get.equals("c9") && shared.getInt("Capitals", 0) < l)
-                editor.putInt("Capitals", l * 10).apply();
-            else if (get.equals("c10") && shared.getInt("Currency", 0) < l)
-                editor.putInt("Currency", l * 10).apply();
+            goToResult();
+        }
+    }
 
-            progressBar = new ProgressDialog(this);//Create new object of progress bar type
-            progressBar.setCancelable(false);//Progress bar cannot be cancelled by pressing any wher on screen
-            progressBar.setMessage("Preparing Result ...");//Title shown in the progress bar
-            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);//Style of the progress bar
-            progressBar.setProgress(0);//attributes
-            progressBar.setMax(100);//attributes
-            progressBar.show();//show the progress bar
-            //This handler will add a delay of 3 seconds
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Intent start to open the navigation drawer activity
-                    progressBar.cancel();//Progress bar will be cancelled (hide from screen) when this run function will execute after 3.5seconds
-                    Intent intent = new Intent(Questions.this, Result.class);
-                    intent.putExtra("correct", l);
-                    intent.putExtra("attemp", k);
-                    startActivity(intent);
-                    finish();
-                }
-            }, 2000);
+    private void goToResult() {
+        final SharedPreferences shared = getSharedPreferences("Score", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();//here we are saving the data when the countdown timer will finish and it is saved in shared prefrence file that is defined in onCreate method as score
+        editor.putInt("Questions", k).commit();
+        if (get.equals("c1") && shared.getInt("Computer", 0) < l)
+            editor.putInt("Computer", l * 10).apply();
+        else if (get.equals("c2") && shared.getInt("Sports", 0) < l)
+            editor.putInt("Sports", l * 10).apply();
+        else if (get.equals("c3") && shared.getInt("Inventions", 0) < l)
+            editor.putInt("Inventions", l * 10).apply();
+        else if (get.equals("c4") && shared.getInt("General", 0) < l)
+            editor.putInt("General", l * 10).apply();
+        else if (get.equals("c5") && shared.getInt("Science", 0) < l)
+            editor.putInt("Science", l * 10).apply();
+        else if (get.equals("c6") && shared.getInt("English", 0) < l)
+            editor.putInt("English", l * 10).apply();
+        else if (get.equals("c7") && shared.getInt("Books", 0) < l)
+            editor.putInt("Books", l * 10).apply();
+        else if (get.equals("c8") && shared.getInt("Maths", 0) < l)
+            editor.putInt("Maths", l * 10).apply();
+        else if (get.equals("c9") && shared.getInt("Capitals", 0) < l)
+            editor.putInt("Capitals", l * 10).apply();
+        else if (get.equals("c10") && shared.getInt("Currency", 0) < l)
+            editor.putInt("Currency", l * 10).apply();
+
+        progressBar = new ProgressDialog(this);//Create new object of progress bar type
+        progressBar.setCancelable(false);//Progress bar cannot be cancelled by pressing any wher on screen
+        progressBar.setMessage("Preparing Result ...");//Title shown in the progress bar
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);//Style of the progress bar
+        progressBar.setProgress(0);//attributes
+        progressBar.setMax(100);//attributes
+        progressBar.show();//show the progress bar
+        //This handler will add a delay of 3 seconds
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Intent start to open the navigation drawer activity
+                progressBar.cancel();//Progress bar will be cancelled (hide from screen) when this run function will execute after 3.5seconds
+                Intent intent = new Intent(Questions.this, Result.class);
+                intent.putExtra("correct", l);
+                intent.putExtra("attemp", k);
+                startActivity(intent);
+                finish();
+            }
+        }, 2000);
+    }
+
+    private void playSoundTimer() {
+        if (!inBackground) {
+            mediaPlayer.start();
+            mediaPlayer.setLooping(false);
+        }
+    }
+
+    private void setTitleActionBar(String type) {
+        switch (type) {
+            case "c1":
+                getSupportActionBar().setTitle("Computer");
+                break;
+            case "c2":
+                getSupportActionBar().setTitle("Sports");
+                break;
+            case "c3":
+                getSupportActionBar().setTitle("Inventions");
+                break;
+            case "c4":
+                getSupportActionBar().setTitle("General Knowledge");
+                break;
+            case "c5":
+                getSupportActionBar().setTitle("Science");
+                break;
+            case "c6":
+                getSupportActionBar().setTitle("English");
+                break;
+            case "c7":
+                getSupportActionBar().setTitle("Authors");
+                break;
+            case "c8":
+                getSupportActionBar().setTitle("Mathematics");
+                break;
+            case "c9":
+                getSupportActionBar().setTitle("Capitals");
+                break;
+            case "c10":
+                getSupportActionBar().setTitle("Currency");
         }
     }
 
@@ -391,18 +407,19 @@ public class Questions extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         variable =1;
-        SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
-        if (sp.getInt("Sound", 0) == 0)
-            mediaPlayer.pause();
+        inBackground = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        inBackground = false;
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         variable =1;
-        SharedPreferences sp = getSharedPreferences("Score", Context.MODE_PRIVATE);
-        if (sp.getInt("Sound", 0) == 0)
-            mediaPlayer.start();
     }
 
     @Override

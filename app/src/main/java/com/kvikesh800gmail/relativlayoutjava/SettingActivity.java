@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-public class Setting_activity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
 
     @Override
@@ -37,7 +37,7 @@ public class Setting_activity extends AppCompatActivity {
                 if (sound.getText().equals("Play Sound")) {
                     editor.putInt("Sound", 0).commit();
                     sound.setText("Mute Sound");
-                    mediaPlayer = MediaPlayer.create(Setting_activity.this, R.raw.abc);
+                    mediaPlayer = MediaPlayer.create(SettingActivity.this, R.raw.abc);
                     mediaPlayer.start();
                     mediaPlayer.setLooping(true);
                 } else if (sound.getText().equals("Mute Sound")) {
